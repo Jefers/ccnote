@@ -2,6 +2,7 @@ import './styles.css';
 import { createClient, deleteClient, getClientStats, moodLabels, searchClients, updateClient, updateClientMood, type ClientRecord, type Mood } from './domain/client';
 import { loadAppContent, loadSeedClients, type AppContent } from './data/loaders';
 import { loadClientsFromStorage, saveClientsToStorage } from './state/store';
+import { getSmartCardTargetIndex, type CardDirection } from './domain/navigation';
 
 interface AppState {
   clients: ClientRecord[];
@@ -49,13 +50,11 @@ function render(): void {
         <p class="eyebrow">Fitness coach dashboard</p>
         <h1>${escapeHtml(state.content.name)}</h1>
         <p class="hero-copy">${escapeHtml(state.content.description)}</p>
-        <div class="stats-grid" aria-label="Client statistics">
-          <div><strong>${stats.totalClients}</strong><span>Clients</span></div>
-          <div><strong>${stats.clientsWithNotes}</strong><span>With notes</span></div>
-          <div><strong>${filteredClients.length}</strong><span>Showing</span></div>
-        </div>
+        <p class="compact-stats" aria-label="Client statistics">
+          <strong data-stat="total">${stats.totalClients}</strong> clients · <strong data-stat="notes">${stats.clientsWithNotes}</strong> with notes · <strong data-stat="showing">${filteredClients.length}</strong> showing
+        </p>
         <label class="search-label" for="search-input">Search clients or notes</label>
-        <input id="search-input" class="search-input" type="search" value="${escapeAttribute(state.query)}" placeholder="Search goals, injuries, names…" autocomplete="off" />
+        <input id="search-input" class="search-input" type="search" value="${escapeAttribute(state.query)}" placeholder="Search goals, injuries, names…" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" inputmode="search" />
       </section>
 
       <section class="toolbar" aria-label="Client actions">
@@ -63,13 +62,18 @@ function render(): void {
           <p class="section-kicker">Today’s check-ins</p>
           <h2>Client cards</h2>
         </div>
-        <button class="primary-action" type="button" data-action="new">+ New client</button>
+        <button class="primary-action toolbar-new" type="button" data-action="new">+ New client</button>
       </section>
 
       <section class="client-list" aria-live="polite">
         ${renderClientList(filteredClients)}
       </section>
     </main>
+    <nav class="floating-actions" aria-label="Fast client navigation">
+      <button type="button" class="fab fab-secondary" data-action="smart-up" aria-label="Previous client card">↑</button>
+      <button type="button" class="fab fab-primary" data-action="new" aria-label="Add new client">+</button>
+      <button type="button" class="fab fab-secondary" data-action="smart-down" aria-label="Next client card">↓</button>
+    </nav>
     ${renderModal(editingClient)}
   `;
 
@@ -156,18 +160,36 @@ function renderModal(client: ClientRecord | null | undefined): string {
 }
 
 function bindEvents(): void {
-  document.querySelector<HTMLButtonElement>('[data-action="new"]')?.addEventListener('click', () => {
-    state.editingId = '__new__';
-    render();
-    document.querySelector<HTMLInputElement>('#client-name')?.focus();
+  document.querySelectorAll<HTMLButtonElement>('[data-action="new"]').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.editingId = '__new__';
+      render();
+      document.querySelector<HTMLInputElement>('#client-name')?.focus();
+    });
   });
 
   document.querySelector<HTMLInputElement>('#search-input')?.addEventListener('input', (event) => {
     state.query = (event.target as HTMLInputElement).value;
-    render();
-    document.querySelector<HTMLInputElement>('#search-input')?.focus();
+    syncClientList();
   });
 
+  document.querySelector<HTMLButtonElement>('[data-action="smart-up"]')?.addEventListener('click', () => scrollToSmartCard('up'));
+  document.querySelector<HTMLButtonElement>('[data-action="smart-down"]')?.addEventListener('click', () => scrollToSmartCard('down'));
+
+  bindClientControls();
+
+  document.querySelectorAll<HTMLElement>('[data-action="close"]').forEach((element) => {
+    element.addEventListener('click', closeModal);
+  });
+
+  document.querySelector<HTMLElement>('[data-action="modal-backdrop"]')?.addEventListener('click', (event) => {
+    if (event.target === event.currentTarget) closeModal();
+  });
+
+  document.querySelector<HTMLFormElement>('#client-form')?.addEventListener('submit', handleFormSubmit);
+}
+
+function bindClientControls(): void {
   document.querySelectorAll<HTMLButtonElement>('[data-action="edit"]').forEach((button) => {
     button.addEventListener('click', () => {
       state.editingId = button.dataset.id ?? null;
@@ -195,16 +217,25 @@ function bindEvents(): void {
       persistAndRender();
     });
   });
+}
 
-  document.querySelectorAll<HTMLElement>('[data-action="close"]').forEach((element) => {
-    element.addEventListener('click', closeModal);
-  });
+function syncClientList(): void {
+  const filteredClients = searchClients(state.clients, state.query);
+  const stats = getClientStats(state.clients);
+  const clientList = document.querySelector<HTMLElement>('.client-list');
+  if (clientList) clientList.innerHTML = renderClientList(filteredClients);
+  document.querySelector<HTMLElement>('[data-stat="total"]')?.replaceChildren(String(stats.totalClients));
+  document.querySelector<HTMLElement>('[data-stat="notes"]')?.replaceChildren(String(stats.clientsWithNotes));
+  document.querySelector<HTMLElement>('[data-stat="showing"]')?.replaceChildren(String(filteredClients.length));
+  bindClientControls();
+}
 
-  document.querySelector<HTMLElement>('[data-action="modal-backdrop"]')?.addEventListener('click', (event) => {
-    if (event.target === event.currentTarget) closeModal();
-  });
-
-  document.querySelector<HTMLFormElement>('#client-form')?.addEventListener('submit', handleFormSubmit);
+function scrollToSmartCard(direction: CardDirection): void {
+  const cards = [...document.querySelectorAll<HTMLElement>('.client-card')];
+  const cardTops = cards.map((card) => window.scrollY + card.getBoundingClientRect().top);
+  const targetIndex = getSmartCardTargetIndex(cardTops, window.scrollY, direction);
+  if (targetIndex === null) return;
+  cards[targetIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function handleFormSubmit(event: SubmitEvent): void {
