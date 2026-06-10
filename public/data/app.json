@@ -1,0 +1,10 @@
+{
+  "name": "CNotes",
+  "subtitle": "Fitness coach client cards",
+  "description": "A private-by-device note dashboard for coaching check-ins, goals, medical cautions, and progress snapshots.",
+  "moodLabels": {
+    "0": "Excellent / energized",
+    "1": "Good / positive",
+    "2": "Needs attention"
+  }
+}

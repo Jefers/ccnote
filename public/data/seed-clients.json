@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Johnson",
+    "notes": "Goals: Weight loss, improve cardiovascular health\nPreferences: Early morning sessions\nMedical: No restrictions\nProgress: Lost 12 lbs in 6 weeks",
+    "mood": 2
+  },
+  {
+    "id": "2",
+    "name": "Mike Smith",
+    "notes": "Goals: Build muscle mass, strength training\nPreferences: Evening workouts\nMedical: Previous knee injury - avoid high impact\nProgress: Bench press increased from 135 to 165 lbs",
+    "mood": 1
+  },
+  {
+    "id": "3",
+    "name": "Emma Wilson",
+    "notes": "Goals: Marathon training, endurance\nPreferences: Outdoor running when possible\nMedical: Asthma - keep inhaler nearby\nProgress: Half marathon in 1:58, targeting 1:50",
+    "mood": 0
+  }
+]
