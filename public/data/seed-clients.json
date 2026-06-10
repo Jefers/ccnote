@@ -1,20 +1,92 @@
 [
   {
-    "id": "1",
-    "name": "Sarah Johnson",
-    "notes": "Goals: Weight loss, improve cardiovascular health\nPreferences: Early morning sessions\nMedical: No restrictions\nProgress: Lost 12 lbs in 6 weeks",
-    "mood": 2
-  },
-  {
-    "id": "2",
-    "name": "Mike Smith",
-    "notes": "Goals: Build muscle mass, strength training\nPreferences: Evening workouts\nMedical: Previous knee injury - avoid high impact\nProgress: Bench press increased from 135 to 165 lbs",
+    "id": "c01",
+    "name": "Alfred Beauchamp",
+    "notes": "Goals: Rebuild shoulder strength for club tennis and improve posture after long desk days\nPreferences: Precise targets, written warm-ups, no loud music\nMedical: Mild right shoulder impingement - avoid aggressive overhead volume\nStats: Age 67 · 6,200 average daily steps · plank 42 sec · resting HR 63 bpm\nProgress: Pain-free serve practice increased from 10 to 28 minutes",
     "mood": 1
   },
   {
-    "id": "3",
-    "name": "Emma Wilson",
-    "notes": "Goals: Marathon training, endurance\nPreferences: Outdoor running when possible\nMedical: Asthma - keep inhaler nearby\nProgress: Half marathon in 1:58, targeting 1:50",
+    "id": "c02",
+    "name": "Maud Fitzwilliam",
+    "notes": "Goals: Improve hill-walking endurance for a Lake District holiday\nPreferences: Saturday long walks, tea break built into plans\nMedical: Osteopenia - include loaded carries and controlled strength work\nStats: Age 59 · 5 km walk 47:30 · suitcase carry 18 kg per hand · BP 122/76\nProgress: Climbs three flights of stairs without stopping",
     "mood": 0
+  },
+  {
+    "id": "c03",
+    "name": "Cormac O'Rourke",
+    "notes": "Goals: Drop waist size while keeping strength for weekend rugby refereeing\nPreferences: Straight-talking coaching, short sessions, measurable weekly targets\nMedical: Old left ankle sprain - balance and calf work required\nStats: Age 44 · waist 38.5 in · trap-bar deadlift 142 kg · 1.5 mile run 12:18\nProgress: Down 7 lb in 5 weeks with deadlift maintained",
+    "mood": 1
+  },
+  {
+    "id": "c04",
+    "name": "Isobel MacLeod",
+    "notes": "Goals: Complete a 10 km charity run and improve breathing confidence\nPreferences: Outdoor intervals, gentle coaching cues, clear pacing zones\nMedical: Exercise-induced asthma - inhaler check before hard intervals\nStats: Age 36 · 5 km 31:42 · easy pace 7:05/km · peak HR 181 bpm\nProgress: Long run increased from 4 km to 7.5 km",
+    "mood": 0
+  },
+  {
+    "id": "c05",
+    "name": "Edmund Cartwright",
+    "notes": "Goals: Build resilient back strength for gardening and reduce morning stiffness\nPreferences: Early sessions, slow explanations, dislikes machines\nMedical: History of lumbar disc irritation - hinge technique must stay pristine\nStats: Age 72 · sit-to-stand 14 reps/min · farmer carry 24 kg total · pain 2/10\nProgress: Can garden for 75 minutes before needing a rest",
+    "mood": 1
+  },
+  {
+    "id": "c06",
+    "name": "Bridget Kavanagh",
+    "notes": "Goals: Improve metabolic health and prepare for a spring cycling tour\nPreferences: Heart-rate zones, spreadsheet-style progress notes\nMedical: Type 2 diabetes - monitor energy and post-session response\nStats: Age 53 · HbA1c 6.7% · cycle FTP estimate 138 W · resting HR 69 bpm\nProgress: Completed 22 km ride without glucose dip",
+    "mood": 2
+  },
+  {
+    "id": "c07",
+    "name": "Hamish Campbell",
+    "notes": "Goals: Regain Highland dancing agility and strengthen knees\nPreferences: Rhythmic drills, mobility first, humorous coaching style\nMedical: Patellar tendinopathy history - manage jumping volume carefully\nStats: Age 41 · single-leg squat box 45 cm · calf raise 22/side · knee pain 1/10\nProgress: Returned to 20-minute dance practice twice weekly",
+    "mood": 0
+  },
+  {
+    "id": "c08",
+    "name": "Eleanor Pritchard",
+    "notes": "Goals: Improve bone density markers and carry grandchildren comfortably\nPreferences: Quiet gym corner, written homework, no burpees\nMedical: Wrist arthritis - adapt pressing and floor transitions\nStats: Age 64 · goblet squat 22 kg x 8 · grip 24 kg right / 22 kg left · steps 7,800\nProgress: Carries 4-year-old grandson up stairs without stopping",
+    "mood": 1
+  },
+  {
+    "id": "c09",
+    "name": "Seamus Donnelly",
+    "notes": "Goals: Train for a sub-2-hour half marathon while losing 10 lb\nPreferences: Data-driven plans, enjoys competitive benchmarks\nMedical: Tight calves and recurring blisters - shoe rotation and mobility needed\nStats: Age 39 · 10 km 54:12 · bodyweight 14 st 3 lb · cadence 164 spm\nProgress: Tempo pace improved from 6:05/km to 5:42/km",
+    "mood": 0
+  },
+  {
+    "id": "c10",
+    "name": "Agnes Sinclair",
+    "notes": "Goals: Restore confidence after a fall and improve single-leg balance\nPreferences: Calm sessions, chair nearby, celebrates small wins\nMedical: Previous wrist fracture - careful with floor work and bracing\nStats: Age 78 · tandem stance 31 sec · timed up-and-go 9.8 sec · step-ups 12/side\nProgress: Walks to shops unaided three mornings per week",
+    "mood": 1
+  },
+  {
+    "id": "c11",
+    "name": "Rupert Ashdown",
+    "notes": "Goals: Improve rowing-machine performance and reduce blood pressure\nPreferences: Technical coaching, numbers on every session, dislikes circuits\nMedical: Hypertension controlled by GP - avoid breath-holding on lifts\nStats: Age 58 · 2k row 8:36 · BP 131/82 · dead bug hold 48 sec\nProgress: 500 m split improved by 7 seconds at same perceived effort",
+    "mood": 2
+  },
+  {
+    "id": "c12",
+    "name": "Fiona MacGregor",
+    "notes": "Goals: Build strength for sea-kayaking and improve trunk rotation\nPreferences: Outdoor conditioning, kettlebells, practical movement drills\nMedical: Mild scoliosis - monitor asymmetry and loaded rotation\nStats: Age 47 · kettlebell swing 20 kg x 15 · side plank 38 sec/side · VO2 estimate 38\nProgress: Completed 90-minute paddle without back tightness",
+    "mood": 0
+  },
+  {
+    "id": "c13",
+    "name": "Benedict Harcourt",
+    "notes": "Goals: Add lean mass and fix rounded-shoulder presentation for stage acting\nPreferences: Superset sessions, visible posture cues, concise feedback\nMedical: No restrictions, occasional neck tension after rehearsals\nStats: Age 32 · bodyweight 76.4 kg · pull-ups 6 · chest-supported row 42 kg x 10\nProgress: Added 1.8 kg in 6 weeks with waist unchanged",
+    "mood": 1
+  },
+  {
+    "id": "c14",
+    "name": "Nora Flaherty",
+    "notes": "Goals: Return to recreational netball and improve lateral speed\nPreferences: Team-sport drills, upbeat sessions, clear return-to-play milestones\nMedical: ACL reconstruction 18 months ago - continue deceleration mechanics\nStats: Age 29 · single-leg hop symmetry 91% · 20 m shuttle 5.4 sec · RPE cap 7/10\nProgress: Cleared controlled change-of-direction drills",
+    "mood": 0
+  },
+  {
+    "id": "c15",
+    "name": "Duncan Abernethy",
+    "notes": "Goals: Reduce golf handicap by improving hip mobility and rotational power\nPreferences: Short daily mobility snacks, objective range checks\nMedical: Right hip replacement 4 years ago - avoid forced end-range loading\nStats: Age 61 · driver carry 196 yd · hip internal rotation 22°/28° · medicine-ball throw 5.8 m\nProgress: Reports smoother backswing and no next-day hip ache",
+    "mood": 1
   }
 ]

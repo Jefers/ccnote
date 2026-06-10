@@ -1,6 +1,6 @@
 import type { ClientRecord } from '../domain/client';
 
-export const DEFAULT_STORAGE_KEY = 'cnotes.clients.v1';
+export const DEFAULT_STORAGE_KEY = 'cnotes.clients.v2';
 
 export interface StorageLike {
   get(key: string): string | undefined;
