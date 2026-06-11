@@ -2,7 +2,7 @@
 
 CNotes is a small, installable Progressive Web App for fitness coaches who want fast client-note cards on a phone.
 
-Live app: <https://jefers.github.io/cnotes/>
+Live app: <https://jefers.github.io/ccnote/>
 
 ## What it does
 
@@ -18,9 +18,9 @@ Live app: <https://jefers.github.io/cnotes/>
 
 ## Calendar scheduling test branch
 
-The `feat/calendar-scheduling-test` branch is intentionally separate from `main`. It can be reviewed, pushed, merged, rolled back, or deleted without changing the currently active CNotes version until you decide to promote it.
+This repository is the GitHub Pages mobile test version for the scheduling direction of CNotes.
 
-This test branch adds:
+This version includes:
 
 - 20 example clients.
 - 38 weekly one-hour coaching sessions.
@@ -80,13 +80,13 @@ Preview the production build with the same project-page base path used on GitHub
 npm run preview -- --host 127.0.0.1
 ```
 
-Open the `/cnotes/` path shown by Vite preview.
+Open the `/ccnote/` path shown by Vite preview.
 
 ## Deployment
 
 GitHub Actions builds and deploys the app to GitHub Pages from `main` using `.github/workflows/ci.yml`.
 
-The Vite base path is configured as `/cnotes/` in `vite.config.ts`, and PWA scope/start URLs are configured for the same GitHub Pages project path.
+The Vite base path is configured as `/ccnote/` in `vite.config.ts`, and PWA scope/start URLs are configured for the same GitHub Pages project path.
 
 ## Privacy note
 

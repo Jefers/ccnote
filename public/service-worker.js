@@ -1,5 +1,5 @@
-const CACHE_NAME = 'cnotes-cache-v2-calendar-test';
-const BASE = '/cnotes/';
+const CACHE_NAME = 'ccnote-cache-v1';
+const BASE = '/ccnote/';
 const PRECACHE_URLS = [
   BASE,
   `${BASE}manifest.webmanifest`,

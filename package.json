@@ -1,9 +1,9 @@
 {
-  "name": "cnotes",
+  "name": "ccnote",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "A static, installable PWA for fitness coach client notes.",
+  "description": "A static, installable PWA for fitness coach client notes and weekly coaching schedules.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  base: '/cnotes/',
+  base: '/ccnote/',
   test: {
     environment: 'node',
   },

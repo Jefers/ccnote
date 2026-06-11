@@ -59,9 +59,9 @@ function render(): void {
           <div class="logo-mark" aria-hidden="true">CN</div>
           <button class="install-button hidden" type="button" data-action="install">Install</button>
         </div>
-        <p class="eyebrow">Scheduling test branch</p>
+        <p class="eyebrow">Mobile schedule test</p>
         <h1>${escapeHtml(state.content.name)}</h1>
-        <p class="hero-copy">${escapeHtml(state.content.description)} This branch adds movable weekly coaching sessions without changing the live main version.</p>
+        <p class="hero-copy">${escapeHtml(state.content.description)} Includes movable weekly coaching sessions for mobile testing.</p>
         <p class="compact-stats" aria-label="Client and schedule statistics">
           <strong data-stat="total">${stats.totalClients}</strong> clients · <strong data-stat="sessions">${state.schedule.length}</strong> weekly sessions · <strong data-stat="showing">${filteredClients.length}</strong> showing
         </p>
