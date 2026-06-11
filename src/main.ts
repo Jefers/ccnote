@@ -436,11 +436,18 @@ function escapeAttribute(value: string): string {
 
 function registerServiceWorker(): void {
   if (!('serviceWorker' in navigator) || !import.meta.env.PROD) return;
-  window.addEventListener('load', () => {
+
+  const register = () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}service-worker.js`, { scope: import.meta.env.BASE_URL }).catch((error: unknown) => {
       console.warn('Service worker registration failed', error);
     });
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('load', register, { once: true });
+  } else {
+    register();
+  }
 }
 
 let deferredInstallPrompt: Event | null = null;
