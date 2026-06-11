@@ -1,7 +1,8 @@
-const CACHE_NAME = 'ccnote-cache-v2-week-grid';
+const CACHE_NAME = 'ccnote-cache-v3-report-and-week-layout';
 const BASE = '/ccnote/';
 const PRECACHE_URLS = [
   BASE,
+  `${BASE}research-report.html`,
   `${BASE}manifest.webmanifest`,
   `${BASE}data/app.json`,
   `${BASE}data/seed-clients.json`,

@@ -88,6 +88,7 @@ function render(): void {
         <p class="compact-stats" aria-label="Client and schedule statistics">
           <strong data-stat="total">${stats.totalClients}</strong> clients · <strong data-stat="sessions">${state.schedule.length}</strong> weekly sessions · <strong data-stat="showing">${filteredClients.length}</strong> showing
         </p>
+        <p class="hero-links"><a href="${import.meta.env.BASE_URL}research-report.html">Research report: future CCNote direction</a></p>
         ${renderPageNav()}
         ${state.page === 'clients' ? renderSearch() : ''}
       </section>
@@ -224,12 +225,16 @@ function renderWeekPage(errors: string[]): string {
       </div>
       ${renderScheduleWarnings(errors)}
       <div class="week-calendar" style="--day-count: ${DAYS.length}; --hour-count: ${hours.length - 1}">
-        <div class="week-header-spacer" aria-hidden="true"></div>
-        ${DAYS.map((day) => `<div class="week-column-header">${escapeHtml(day.shortLabel)}</div>`).join('')}
-        <div class="time-axis">
-          ${hours.slice(0, -1).map((hour) => `<div class="time-label">${String(hour).padStart(2, '0')}:00</div>`).join('')}
+        <div class="week-calendar-header">
+          <div class="week-header-spacer" aria-hidden="true"></div>
+          ${DAYS.map((day) => `<div class="week-column-header">${escapeHtml(day.shortLabel)}</div>`).join('')}
         </div>
-        ${DAYS.map(renderWeekColumn).join('')}
+        <div class="week-calendar-body">
+          <div class="time-axis">
+            ${hours.slice(0, -1).map((hour) => `<div class="time-label">${String(hour).padStart(2, '0')}:00</div>`).join('')}
+          </div>
+          ${DAYS.map(renderWeekColumn).join('')}
+        </div>
       </div>
     </section>
   `;
@@ -251,7 +256,7 @@ function renderWeekBlock(session: CoachingSession): string {
   return `
     <button type="button" class="week-session-block" style="--client-colour: ${getClientColour(session.clientId)}; --top: ${top}; --height: ${height}" data-action="open-client" data-client-id="${escapeAttribute(session.clientId)}" aria-label="Open ${escapeAttribute(client?.name ?? 'client')} session at ${escapeAttribute(formatTime(session.start))}">
       <strong>${escapeHtml(formatTime(session.start))}</strong>
-      <span class="week-client-name"><span>${escapeHtml(label.givenNames)}</span>${label.surname ? `<span>${escapeHtml(label.surname)}</span>` : ''}</span>
+      <span class="week-client-name"><span class="week-given-names">${escapeHtml(label.givenNames)}</span>${label.surname ? `<br class="week-name-break" aria-hidden="true"><span class="week-surname">${escapeHtml(label.surname)}</span>` : ''}</span>
     </button>
   `;
 }
