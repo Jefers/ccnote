@@ -1,10 +1,11 @@
-const CACHE_NAME = 'cnotes-cache-v1';
+const CACHE_NAME = 'cnotes-cache-v2-calendar-test';
 const BASE = '/cnotes/';
 const PRECACHE_URLS = [
   BASE,
   `${BASE}manifest.webmanifest`,
   `${BASE}data/app.json`,
   `${BASE}data/seed-clients.json`,
+  `${BASE}data/schedule.json`,
   `${BASE}icons/icon.svg`,
   `${BASE}icons/icon-192.png`,
   `${BASE}icons/icon-512.png`,

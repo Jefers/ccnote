@@ -9,11 +9,24 @@ Live app: <https://jefers.github.io/cnotes/>
 - Keeps client cards for goals, preferences, medical cautions, and progress notes.
 - Stores edits locally in the browser with `localStorage`; no backend or runtime secrets are used.
 - Ships with demo seed clients in `public/data/seed-clients.json`.
+- The experimental calendar branch also ships weekly sessions in `public/data/schedule.json`.
 - Supports quick mobile search and one-handed floating controls:
   - `+` creates a new client.
   - `↑` jumps to the previous visible client card.
   - `↓` jumps to the next visible client card.
 - Installs as a PWA on supported mobile and desktop browsers.
+
+## Calendar scheduling test branch
+
+The `feat/calendar-scheduling-test` branch is intentionally separate from `main`. It can be reviewed, pushed, merged, rolled back, or deleted without changing the currently active CNotes version until you decide to promote it.
+
+This test branch adds:
+
+- 20 example clients.
+- 38 weekly one-hour coaching sessions.
+- Day and week calendar views.
+- Movable session day/time controls stored locally in the browser.
+- Schedule validation for no Sundays, no Saturday evenings, maximum three back-to-back coaching hours, protected breaks, and at least one day between repeat sessions for the same client.
 
 ## Project structure
 
@@ -22,6 +35,7 @@ public/
   data/
     app.json              # app copy and mood labels
     seed-clients.json     # default demo clients
+    schedule.json         # weekly test-branch coaching slots
   icons/                  # PWA icon source and generated PNGs
   manifest.webmanifest
   service-worker.js
@@ -29,12 +43,15 @@ src/
   data/loaders.ts         # static JSON loading
   domain/client.ts        # client CRUD/search/stats logic
   domain/navigation.ts    # smart card navigation logic
+  domain/schedule.ts      # weekly schedule rules and movement helpers
+  state/scheduleStore.ts  # local schedule move persistence
   state/store.ts          # localStorage persistence
   main.ts                 # DOM app shell
   styles.css              # responsive UI and PWA styling
 tests/
   card-navigation.test.ts
   client-domain.test.ts
+  schedule-domain.test.ts
 ```
 
 ## Local development

@@ -6,8 +6,8 @@ import rawSeedClients from '../public/data/seed-clients.json';
 const seedClients = rawSeedClients as ClientRecord[];
 
 describe('client domain', () => {
-  it('provides fifteen traditional British and Irish example clients in order', () => {
-    expect(seedClients).toHaveLength(15);
+  it('provides twenty traditional British and Irish example clients in order', () => {
+    expect(seedClients).toHaveLength(20);
     expect(seedClients.map((client) => client.name)).toEqual([
       'Alfred Beauchamp',
       'Maud Fitzwilliam',
@@ -24,13 +24,18 @@ describe('client domain', () => {
       'Benedict Harcourt',
       'Nora Flaherty',
       'Duncan Abernethy',
+      'Gwendolen Fairfax',
+      'Patrick Llewellyn',
+      'Morag Sutherland',
+      'Nigel Fortescue',
+      'Siobhan Gallagher',
     ]);
   });
 
   it('creates a new client at the top with normalized mood', () => {
     const clients = createClient(seedClients, { id: 'new-1', name: '  Ada Coach  ', notes: '  Goals: strength  ', mood: 7 });
     expect(clients[0]).toEqual({ id: 'new-1', name: 'Ada Coach', notes: 'Goals: strength', mood: 2 });
-    expect(clients).toHaveLength(16);
+    expect(clients).toHaveLength(21);
   });
 
   it('updates an existing client without reordering the list', () => {
@@ -41,17 +46,17 @@ describe('client domain', () => {
 
   it('deletes only the selected client', () => {
     expect(deleteClient(seedClients, 'c02').map((client) => client.name)).not.toContain('Maud Fitzwilliam');
-    expect(deleteClient(seedClients, 'c02')).toHaveLength(14);
+    expect(deleteClient(seedClients, 'c02')).toHaveLength(19);
   });
 
   it('searches by client name and notes case-insensitively', () => {
     expect(searchClients(seedClients, 'knee').map((client) => client.name)).toEqual(['Hamish Campbell']);
     expect(searchClients(seedClients, 'MACLEOD').map((client) => client.name)).toEqual(['Isobel MacLeod']);
-    expect(searchClients(seedClients, '   ')).toHaveLength(15);
+    expect(searchClients(seedClients, '   ')).toHaveLength(20);
   });
 
   it('calculates stats from non-empty notes', () => {
-    expect(getClientStats([...seedClients, { id: 'extra', name: 'No Notes', notes: '   ', mood: 1 }])).toEqual({ totalClients: 16, clientsWithNotes: 15 });
+    expect(getClientStats([...seedClients, { id: 'extra', name: 'No Notes', notes: '   ', mood: 1 }])).toEqual({ totalClients: 21, clientsWithNotes: 20 });
   });
 
   it('normalizes mood values into the supported 0..2 range', () => {
@@ -69,7 +74,7 @@ describe('client storage', () => {
 
   it('falls back to seed clients when storage is empty or corrupt', () => {
     const storage = new Map<string, string>();
-    expect(loadClientsFromStorage(storage, seedClients)).toHaveLength(15);
+    expect(loadClientsFromStorage(storage, seedClients)).toHaveLength(20);
     storage.set(DEFAULT_STORAGE_KEY, '{bad json');
     expect(loadClientsFromStorage(storage, seedClients).map((client) => client.name).slice(0, 3)).toEqual(['Alfred Beauchamp', 'Maud Fitzwilliam', "Cormac O'Rourke"]);
   });

@@ -1,0 +1,306 @@
+[
+  {
+    "id": "s001",
+    "clientId": "c01",
+    "day": "monday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Shoulder strength and posture reset"
+  },
+  {
+    "id": "s002",
+    "clientId": "c02",
+    "day": "monday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "Hill-walking strength and loaded carries"
+  },
+  {
+    "id": "s003",
+    "clientId": "c03",
+    "day": "monday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Strength maintenance and waist-loss conditioning"
+  },
+  {
+    "id": "s004",
+    "clientId": "c04",
+    "day": "monday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "10 km aerobic pacing and breathing control"
+  },
+  {
+    "id": "s005",
+    "clientId": "c05",
+    "day": "monday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Back resilience and hinge technique"
+  },
+  {
+    "id": "s006",
+    "clientId": "c16",
+    "day": "monday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Posture, trunk control and rehearsal stamina"
+  },
+  {
+    "id": "s007",
+    "clientId": "c06",
+    "day": "tuesday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Metabolic conditioning and cycling intervals"
+  },
+  {
+    "id": "s008",
+    "clientId": "c07",
+    "day": "tuesday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "Knee-friendly agility and Highland dance prep"
+  },
+  {
+    "id": "s009",
+    "clientId": "c08",
+    "day": "tuesday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Bone-density strength and carries"
+  },
+  {
+    "id": "s010",
+    "clientId": "c09",
+    "day": "tuesday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "Half-marathon tempo mechanics"
+  },
+  {
+    "id": "s011",
+    "clientId": "c10",
+    "day": "tuesday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Falls confidence and single-leg balance"
+  },
+  {
+    "id": "s012",
+    "clientId": "c17",
+    "day": "tuesday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Cycling power and hip mobility"
+  },
+  {
+    "id": "s013",
+    "clientId": "c01",
+    "day": "wednesday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Tennis serve tolerance and upper-back strength"
+  },
+  {
+    "id": "s014",
+    "clientId": "c11",
+    "day": "wednesday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "Rowing performance and blood-pressure-safe lifting"
+  },
+  {
+    "id": "s015",
+    "clientId": "c12",
+    "day": "wednesday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Kayaking trunk rotation and kettlebell conditioning"
+  },
+  {
+    "id": "s016",
+    "clientId": "c13",
+    "day": "wednesday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "Lean-mass strength and posture presentation"
+  },
+  {
+    "id": "s017",
+    "clientId": "c14",
+    "day": "wednesday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Netball deceleration and lateral movement"
+  },
+  {
+    "id": "s018",
+    "clientId": "c18",
+    "day": "wednesday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Trail balance and pole technique"
+  },
+  {
+    "id": "s019",
+    "clientId": "c02",
+    "day": "thursday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Step-ups, hill pacing and loaded carries"
+  },
+  {
+    "id": "s020",
+    "clientId": "c03",
+    "day": "thursday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "Rugby referee conditioning and ankle capacity"
+  },
+  {
+    "id": "s021",
+    "clientId": "c15",
+    "day": "thursday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Golf hip mobility and rotational power"
+  },
+  {
+    "id": "s022",
+    "clientId": "c16",
+    "day": "thursday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "Stage posture and neck-friendly strength"
+  },
+  {
+    "id": "s023",
+    "clientId": "c19",
+    "day": "thursday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Sailing grip, pulling strength and cuff care"
+  },
+  {
+    "id": "s024",
+    "clientId": "c20",
+    "day": "thursday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Sprint repeatability and hamstring resilience"
+  },
+  {
+    "id": "s025",
+    "clientId": "c01",
+    "day": "friday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Shoulder durability and tennis movement review"
+  },
+  {
+    "id": "s026",
+    "clientId": "c04",
+    "day": "friday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "10 km intervals and asthma-aware pacing"
+  },
+  {
+    "id": "s027",
+    "clientId": "c05",
+    "day": "friday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Gardening strength and morning-stiffness reduction"
+  },
+  {
+    "id": "s028",
+    "clientId": "c06",
+    "day": "friday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "Cycling endurance and glucose-aware conditioning"
+  },
+  {
+    "id": "s029",
+    "clientId": "c07",
+    "day": "friday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Dance agility and tendon-load management"
+  },
+  {
+    "id": "s030",
+    "clientId": "c17",
+    "day": "friday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Coast-to-coast ride preparation"
+  },
+  {
+    "id": "s032",
+    "clientId": "c08",
+    "day": "saturday",
+    "start": "08:00",
+    "durationMinutes": 60,
+    "focus": "Strength confidence and wrist-friendly pressing"
+  },
+  {
+    "id": "s033",
+    "clientId": "c09",
+    "day": "saturday",
+    "start": "09:00",
+    "durationMinutes": 60,
+    "focus": "Long-run support and blister-prevention mobility"
+  },
+  {
+    "id": "s034",
+    "clientId": "c10",
+    "day": "saturday",
+    "start": "10:00",
+    "durationMinutes": 60,
+    "focus": "Balance confidence and step-up practice"
+  },
+  {
+    "id": "s035",
+    "clientId": "c11",
+    "day": "saturday",
+    "start": "11:30",
+    "durationMinutes": 60,
+    "focus": "Rowing split work and trunk stability"
+  },
+  {
+    "id": "s036",
+    "clientId": "c12",
+    "day": "saturday",
+    "start": "12:30",
+    "durationMinutes": 60,
+    "focus": "Kayak conditioning and rotation control"
+  },
+  {
+    "id": "s037",
+    "clientId": "c13",
+    "day": "saturday",
+    "start": "14:00",
+    "durationMinutes": 60,
+    "focus": "Lean-mass accessory work and stage posture"
+  },
+  {
+    "id": "s038",
+    "clientId": "c14",
+    "day": "saturday",
+    "start": "15:00",
+    "durationMinutes": 60,
+    "focus": "Return-to-netball speed and landing mechanics"
+  },
+  {
+    "id": "s039",
+    "clientId": "c18",
+    "day": "saturday",
+    "start": "16:00",
+    "durationMinutes": 60,
+    "focus": "Winter-path balance and hill confidence"
+  }
+]

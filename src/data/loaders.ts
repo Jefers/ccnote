@@ -1,4 +1,5 @@
 import type { ClientRecord } from '../domain/client';
+import type { CoachingSession } from '../domain/schedule';
 
 export interface AppContent {
   name: string;
@@ -35,6 +36,14 @@ export async function loadAppContent(): Promise<AppContent> {
 export async function loadSeedClients(): Promise<ClientRecord[]> {
   try {
     return await loadJson<ClientRecord[]>('data/seed-clients.json');
+  } catch {
+    return [];
+  }
+}
+
+export async function loadSeedSchedule(): Promise<CoachingSession[]> {
+  try {
+    return await loadJson<CoachingSession[]>('data/schedule.json');
   } catch {
     return [];
   }
