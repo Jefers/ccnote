@@ -19,6 +19,16 @@ export interface ScheduleValidationResult {
   errors: string[];
 }
 
+export interface NamedClient {
+  id: string;
+  name: string;
+}
+
+export interface UpcomingSession {
+  session: CoachingSession;
+  minutesUntil: number;
+}
+
 export const DAYS: DayDefinition[] = [
   { id: 'monday', label: 'Monday', shortLabel: 'Mon' },
   { id: 'tuesday', label: 'Tuesday', shortLabel: 'Tue' },
@@ -29,6 +39,14 @@ export const DAYS: DayDefinition[] = [
 ];
 
 const dayIndex = new Map<WeekDay, number>(DAYS.map((day, index) => [day.id, index]));
+
+const clientColours = [
+  '#2f80ed', '#eb5757', '#27ae60', '#f2994a', '#9b51e0',
+  '#00a8a8', '#d96c06', '#6f7c12', '#b83280', '#0f766e',
+  '#7c3aed', '#dc2626', '#2563eb', '#16a34a', '#ca8a04',
+  '#0891b2', '#be185d', '#4f46e5', '#65a30d', '#c2410c',
+  '#0d9488', '#9333ea', '#e11d48', '#0284c7', '#a16207',
+];
 
 export function validateWeeklySchedule(sessions: readonly CoachingSession[]): ScheduleValidationResult {
   const errors: string[] = [];
@@ -86,6 +104,38 @@ export function moveSession(
   return sessions.map((session) => (session.id === sessionId ? { ...session, day: change.day, start: change.start } : session));
 }
 
+export function getNextSessionForClient(clientId: string, sessions: readonly CoachingSession[], now = new Date()): UpcomingSession | null {
+  const clientSessions = sessions.filter((session) => session.clientId === clientId);
+  if (clientSessions.length === 0) return null;
+
+  const nowWeekMinutes = getWeeklyMinute(now);
+  return clientSessions
+    .map((session) => {
+      const sessionWeekMinutes = (dayIndex.get(session.day) ?? 0) * 24 * 60 + toMinutes(session.start);
+      let minutesUntil = sessionWeekMinutes - nowWeekMinutes;
+      if (minutesUntil < 0) minutesUntil += 7 * 24 * 60;
+      return { session, minutesUntil };
+    })
+    .sort((left, right) => left.minutesUntil - right.minutesUntil || toMinutes(left.session.start) - toMinutes(right.session.start))[0];
+}
+
+export function sortClientsByUpcomingSession<T extends NamedClient>(clients: readonly T[], sessions: readonly CoachingSession[], now = new Date()): T[] {
+  return [...clients].sort((left, right) => {
+    const leftNext = getNextSessionForClient(left.id, sessions, now);
+    const rightNext = getNextSessionForClient(right.id, sessions, now);
+    if (leftNext && rightNext) return leftNext.minutesUntil - rightNext.minutesUntil || left.name.localeCompare(right.name);
+    if (leftNext) return -1;
+    if (rightNext) return 1;
+    return left.name.localeCompare(right.name);
+  });
+}
+
+export function getClientColour(clientId: string): string {
+  const match = clientId.match(/\d+/);
+  const numeric = match ? Number(match[0]) : hashString(clientId);
+  return clientColours[Math.abs(numeric - 1) % clientColours.length];
+}
+
 export function toMinutes(value: string): number {
   const [hours = '0', minutes = '0'] = value.split(':');
   return Number(hours) * 60 + Number(minutes);
@@ -95,4 +145,14 @@ export function formatTime(value: string): string {
   const [hour, minute] = value.split(':').map(Number);
   const date = new Date(2000, 0, 1, hour, minute);
   return new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: '2-digit' }).format(date);
+}
+
+function getWeeklyMinute(date: Date): number {
+  const jsDay = date.getDay();
+  const mondayBasedDay = jsDay === 0 ? 6 : jsDay - 1;
+  return mondayBasedDay * 24 * 60 + date.getHours() * 60 + date.getMinutes();
+}
+
+function hashString(value: string): number {
+  return [...value].reduce((hash, character) => hash + character.charCodeAt(0), 0);
 }

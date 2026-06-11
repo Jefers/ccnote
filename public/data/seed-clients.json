@@ -118,5 +118,35 @@
     "name": "Siobhan Gallagher",
     "notes": "Goals: Return to Gaelic football socials and improve sprint repeatability\nPreferences: Fast-paced drills, competitive timers, short rests\nMedical: Hamstring strain last season - eccentric strength priority\nStats: Age 34 \u00b7 10 m sprint 2.05 sec \u00b7 Nordic curl partial 5 reps \u00b7 HR recovery 31 bpm\nProgress: Completed 8 controlled accelerations pain-free",
     "mood": 0
+  },
+  {
+    "id": "c21",
+    "name": "Winifred Pembroke",
+    "notes": "Goals: Rebuild confidence after menopause-related strength loss and complete a 5 km park walk without stopping\nPreferences: Gentle but firm coaching, clear demonstrations, no floor exercises without alternatives\nMedical: Occasional vertigo - slow transitions and seated recovery options\nStats: Age 62 \u00b7 sit-to-stand 11 reps/min \u00b7 grip 21 kg right / 20 kg left \u00b7 walk pace 18:10/mile\nProgress: Now completes two 30-minute walks per week",
+    "mood": 1
+  },
+  {
+    "id": "c22",
+    "name": "Angus MacIntyre",
+    "notes": "Goals: Improve farm-work lifting capacity and reduce evening back fatigue\nPreferences: Practical strength drills, carries, simple progress numbers\nMedical: Chronic hamstring tightness - hinge warm-up required\nStats: Age 48 \u00b7 trap-bar deadlift 128 kg \u00b7 farmer carry 32 kg/hand \u00b7 hamstring reach -8 cm\nProgress: Reports no back ache after two consecutive yard-work days",
+    "mood": 0
+  },
+  {
+    "id": "c23",
+    "name": "Maeve O'Sullivan",
+    "notes": "Goals: Return to Irish dancing socials and improve ankle stiffness\nPreferences: Music-led warm-ups, precise footwork cues, short mobility homework\nMedical: Previous right ankle fracture - avoid sudden high-volume hops\nStats: Age 27 \u00b7 single-leg calf raise 19 right / 24 left \u00b7 ankle dorsiflexion 34\u00b0/41\u00b0 \u00b7 RPE cap 7/10\nProgress: Completed 12 minutes of low-impact dance drills pain-free",
+    "mood": 1
+  },
+  {
+    "id": "c24",
+    "name": "Percival Wycliffe",
+    "notes": "Goals: Build stamina for museum guiding shifts and improve neck/upper-back posture\nPreferences: Polite coaching style, written session summaries, dislikes loud gyms\nMedical: Cervical stiffness - avoid heavy axial loading\nStats: Age 71 \u00b7 6-minute walk 538 m \u00b7 band row 3 x 15 \u00b7 neck discomfort 2/10\nProgress: Can guide a two-hour tour without sitting down",
+    "mood": 2
+  },
+  {
+    "id": "c25",
+    "name": "Elspeth Drummond",
+    "notes": "Goals: Maintain independence and improve stair confidence after moving house\nPreferences: Home-friendly exercises, balance games, encouragement over intensity\nMedical: Mild knee osteoarthritis - pain-guided squats and step work\nStats: Age 74 \u00b7 stair climb 14 steps \u00b7 single-leg balance 16 sec/side \u00b7 pain 1-3/10\nProgress: Carries light shopping upstairs without using both rails",
+    "mood": 1
   }
 ]

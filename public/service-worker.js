@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ccnote-cache-v1';
+const CACHE_NAME = 'ccnote-cache-v2-week-grid';
 const BASE = '/ccnote/';
 const PRECACHE_URLS = [
   BASE,

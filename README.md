@@ -22,10 +22,13 @@ This repository is the GitHub Pages mobile test version for the scheduling direc
 
 This version includes:
 
-- 20 example clients.
-- 38 weekly one-hour coaching sessions.
-- Day and week calendar views.
+- 25 example clients, including unscheduled clients that remain visible in the card list.
+- 42 weekly one-hour coaching sessions.
+- Client cards ordered by the closest upcoming weekly session; unscheduled cards stay at the bottom.
+- Day and Google-style graphical week calendar views with coloured client blocks.
+- Tap a calendar block to jump directly to that client card.
 - Movable session day/time controls stored locally in the browser.
+- Session add/edit/delete controls inside each edited client card.
 - Schedule validation for no Sundays, no Saturday evenings, maximum three back-to-back coaching hours, protected breaks, and at least one day between repeat sessions for the same client.
 
 ## Project structure

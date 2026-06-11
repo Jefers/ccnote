@@ -302,5 +302,37 @@
     "start": "16:00",
     "durationMinutes": 60,
     "focus": "Winter-path balance and hill confidence"
+  },
+  {
+    "id": "s040",
+    "clientId": "c21",
+    "day": "monday",
+    "start": "16:00",
+    "durationMinutes": 60,
+    "focus": "Walking stamina and menopause strength reset"
+  },
+  {
+    "id": "s041",
+    "clientId": "c22",
+    "day": "tuesday",
+    "start": "16:00",
+    "durationMinutes": 60,
+    "focus": "Farm-work lifting mechanics and hamstring capacity"
+  },
+  {
+    "id": "s042",
+    "clientId": "c23",
+    "day": "wednesday",
+    "start": "16:00",
+    "durationMinutes": 60,
+    "focus": "Ankle capacity and low-impact dance return"
+  },
+  {
+    "id": "s043",
+    "clientId": "c24",
+    "day": "friday",
+    "start": "16:00",
+    "durationMinutes": 60,
+    "focus": "Tour-guide stamina and neck-friendly posture"
   }
 ]

@@ -1,6 +1,6 @@
 import type { CoachingSession } from '../domain/schedule';
 
-export const DEFAULT_SCHEDULE_STORAGE_KEY = 'cnotes.schedule.v1';
+export const DEFAULT_SCHEDULE_STORAGE_KEY = 'ccnote.schedule.v2';
 
 export interface BrowserStorageLike {
   getItem(key: string): string | null;

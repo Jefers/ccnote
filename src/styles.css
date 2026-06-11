@@ -691,3 +691,232 @@ button {
     padding: 0 0.9rem;
   }
 }
+
+.toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.next-session {
+  margin: 0.35rem 0 0;
+  color: #596674;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.client-card::before {
+  background: var(--client-colour, var(--accent, #4f8f6d));
+}
+
+.client-session-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.mini-session {
+  border: 1px solid color-mix(in srgb, var(--client-colour, #101820) 40%, transparent);
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  background: color-mix(in srgb, var(--client-colour, #101820) 12%, white);
+  color: #17212b;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.mini-session.unscheduled {
+  border-color: rgba(16, 24, 32, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  color: #7d8894;
+}
+
+.week-calendar {
+  display: grid;
+  grid-template-columns: 3.65rem repeat(var(--day-count), minmax(8rem, 1fr));
+  gap: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(16, 24, 32, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 18px 44px rgba(16, 24, 32, 0.1);
+}
+
+.week-header-spacer,
+.week-column-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 2.7rem;
+  border-bottom: 1px solid rgba(16, 24, 32, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.week-column-header {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid rgba(16, 24, 32, 0.08);
+  color: #17212b;
+  font-weight: 900;
+}
+
+.time-axis {
+  display: grid;
+  grid-template-rows: repeat(var(--hour-count), 60px);
+  min-height: calc(var(--hour-count) * 60px);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.time-label {
+  padding: 0.25rem 0.35rem 0 0;
+  border-top: 1px solid rgba(16, 24, 32, 0.06);
+  color: #7d8894;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.week-column {
+  position: relative;
+  min-width: 8rem;
+  min-height: calc(var(--hour-count) * 60px);
+  border-left: 1px solid rgba(16, 24, 32, 0.08);
+  background-image: repeating-linear-gradient(to bottom, rgba(16, 24, 32, 0.055) 0 1px, transparent 1px 60px);
+}
+
+.week-session-block {
+  position: absolute;
+  top: calc(var(--top) * 1px);
+  left: 0.25rem;
+  right: 0.25rem;
+  min-height: calc(var(--height) * 1px - 0.35rem);
+  border: 0;
+  border-radius: 14px;
+  padding: 0.42rem 0.5rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--client-colour) 92%, white), var(--client-colour));
+  color: white;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--client-colour) 30%, transparent);
+  text-align: left;
+}
+
+.week-session-block strong,
+.week-session-block span {
+  display: block;
+}
+
+.week-session-block strong {
+  font-size: 0.72rem;
+}
+
+.week-session-block span {
+  margin-top: 0.12rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.session-card {
+  cursor: pointer;
+  border-left: 0.45rem solid var(--client-colour, #101820);
+}
+
+.session-time {
+  background: var(--client-colour, #101820);
+}
+
+.session-editor {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(16, 24, 32, 0.1);
+}
+
+.session-editor-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.session-editor-heading h3 {
+  margin: 0;
+}
+
+.small-action {
+  width: auto;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+}
+
+.session-editor-row {
+  display: grid;
+  grid-template-columns: 5.5rem 7rem minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: end;
+  margin: 0.6rem 0;
+  padding: 0.75rem;
+  border-left: 0.45rem solid var(--client-colour, #101820);
+  border-radius: 16px;
+  background: rgba(16, 24, 32, 0.04);
+}
+
+.session-editor-row label {
+  display: grid;
+  gap: 0.25rem;
+  color: #596674;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.session-editor-row select,
+.session-editor-row input {
+  min-height: 2.4rem;
+  min-width: 0;
+  border: 1px solid rgba(16, 24, 32, 0.14);
+  border-radius: 12px;
+  padding: 0.45rem 0.55rem;
+  background: white;
+  color: #17212b;
+}
+
+.modal-note {
+  color: #596674;
+  font-weight: 700;
+}
+
+@media (max-width: 680px) {
+  .toolbar-actions,
+  .session-editor-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar-actions .secondary-action,
+  .toolbar-actions .primary-action,
+  .small-action {
+    width: 100%;
+  }
+
+  .week-calendar {
+    grid-template-columns: 3.2rem repeat(var(--day-count), minmax(7.2rem, 1fr));
+    border-radius: 18px;
+  }
+
+  .week-session-block {
+    left: 0.18rem;
+    right: 0.18rem;
+    padding: 0.35rem;
+  }
+
+  .week-session-block span {
+    font-size: 0.7rem;
+  }
+
+  .session-editor-row {
+    grid-template-columns: 1fr;
+  }
+}

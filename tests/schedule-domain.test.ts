@@ -14,11 +14,12 @@ const sessions = rawSchedule as CoachingSession[];
 const clients = rawClients as ClientRecord[];
 
 describe('weekly coaching schedule data', () => {
-  it('has five additional clients and schedules every example client', () => {
-    expect(clients).toHaveLength(20);
+  it('has five further example clients and leaves unscheduled clients off the calendar', () => {
+    expect(clients).toHaveLength(25);
     const scheduledClientIds = new Set(sessions.map((session) => session.clientId));
-    expect(scheduledClientIds.size).toBe(20);
-    for (const client of clients) expect(scheduledClientIds.has(client.id)).toBe(true);
+    expect(scheduledClientIds.size).toBe(24);
+    expect(scheduledClientIds.has('c25')).toBe(false);
+    expect(clients.some((client) => client.id === 'c25')).toBe(true);
   });
 
   it('gives each client one to three sessions with at least one day between repeat sessions', () => {

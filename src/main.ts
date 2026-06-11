@@ -3,7 +3,19 @@ import { createClient, deleteClient, getClientStats, moodLabels, searchClients, 
 import { loadAppContent, loadSeedClients, loadSeedSchedule, type AppContent } from './data/loaders';
 import { loadClientsFromStorage, saveClientsToStorage } from './state/store';
 import { loadScheduleFromStorage, saveScheduleToStorage } from './state/scheduleStore';
-import { DAYS, formatTime, getSessionsForDay, moveSession, validateWeeklySchedule, type CoachingSession, type WeekDay } from './domain/schedule';
+import {
+  DAYS,
+  formatTime,
+  getClientColour,
+  getNextSessionForClient,
+  getSessionsForDay,
+  moveSession,
+  sortClientsByUpcomingSession,
+  toMinutes,
+  validateWeeklySchedule,
+  type CoachingSession,
+  type WeekDay,
+} from './domain/schedule';
 import { getSmartCardTargetIndex, type CardDirection } from './domain/navigation';
 
 type AppPage = 'clients' | 'day' | 'week';
@@ -21,6 +33,8 @@ interface AppState {
 const appRootElement = document.querySelector<HTMLDivElement>('#app');
 if (!appRootElement) throw new Error('Missing #app root');
 const appRoot = appRootElement;
+const weekStartMinute = 7 * 60;
+const weekEndMinute = 18 * 60;
 
 const state: AppState = {
   clients: [],
@@ -46,8 +60,16 @@ async function bootstrap(): Promise<void> {
   registerServiceWorker();
 }
 
+function getOrderedClients(): ClientRecord[] {
+  return sortClientsByUpcomingSession(state.clients, state.schedule, new Date());
+}
+
+function getFilteredClients(): ClientRecord[] {
+  return searchClients(getOrderedClients(), state.query);
+}
+
 function render(): void {
-  const filteredClients = searchClients(state.clients, state.query);
+  const filteredClients = getFilteredClients();
   const stats = getClientStats(state.clients);
   const editingClient = state.editingId ? state.clients.find((client) => client.id === state.editingId) : null;
   const validation = validateWeeklySchedule(state.schedule);
@@ -61,7 +83,7 @@ function render(): void {
         </div>
         <p class="eyebrow">Mobile schedule test</p>
         <h1>${escapeHtml(state.content.name)}</h1>
-        <p class="hero-copy">${escapeHtml(state.content.description)} Includes movable weekly coaching sessions for mobile testing.</p>
+        <p class="hero-copy">${escapeHtml(state.content.description)} Includes a Google-style weekly rota and client-linked session editing.</p>
         <p class="compact-stats" aria-label="Client and schedule statistics">
           <strong data-stat="total">${stats.totalClients}</strong> clients · <strong data-stat="sessions">${state.schedule.length}</strong> weekly sessions · <strong data-stat="showing">${filteredClients.length}</strong> showing
         </p>
@@ -106,10 +128,13 @@ function renderClientsPage(filteredClients: ClientRecord[]): string {
   return `
     <section class="toolbar" aria-label="Client actions">
       <div>
-        <p class="section-kicker">Today’s check-ins</p>
+        <p class="section-kicker">Next sessions first</p>
         <h2>Client cards</h2>
       </div>
-      <button class="primary-action toolbar-new" type="button" data-action="new">+ New client</button>
+      <div class="toolbar-actions">
+        <button class="secondary-action" type="button" data-action="refresh-order">Refresh order</button>
+        <button class="primary-action toolbar-new" type="button" data-action="new">+ New client</button>
+      </div>
     </section>
 
     <section class="client-list" aria-live="polite">
@@ -130,29 +155,35 @@ function renderClientList(clients: ClientRecord[]): string {
     `;
   }
 
-  return clients
-    .map(
-      (client) => `
-        <article class="client-card mood-${client.mood}" data-client-id="${escapeAttribute(client.id)}">
-          <div class="card-topline">
-            <div>
-              <p class="mood-pill">${escapeHtml(state.content.moodLabels[String(client.mood)] ?? moodLabels[client.mood])}</p>
-              <h3>${escapeHtml(client.name)}</h3>
-            </div>
-            <div class="card-actions">
-              <button type="button" class="icon-button" data-action="edit" data-id="${escapeAttribute(client.id)}" aria-label="Edit ${escapeAttribute(client.name)}">Edit</button>
-              <button type="button" class="icon-button danger" data-action="delete" data-id="${escapeAttribute(client.id)}" aria-label="Delete ${escapeAttribute(client.name)}">Delete</button>
-            </div>
-          </div>
-          <p class="notes ${client.notes.trim() ? '' : 'muted'}">${client.notes.trim() ? escapeHtml(client.notes) : 'No notes yet. Add goals, preferences, medical cautions, and progress snapshots.'}</p>
-          <label class="mood-control">
-            <span>Mood / readiness</span>
-            <input type="range" min="0" max="2" step="1" value="${client.mood}" data-action="mood" data-id="${escapeAttribute(client.id)}" aria-label="Mood for ${escapeAttribute(client.name)}" />
-          </label>
-        </article>
-      `,
-    )
-    .join('');
+  return clients.map(renderClientCard).join('');
+}
+
+function renderClientCard(client: ClientRecord): string {
+  const sessions = state.schedule.filter((session) => session.clientId === client.id);
+  const next = getNextSessionForClient(client.id, state.schedule, new Date());
+  return `
+    <article class="client-card mood-${client.mood}" id="client-${escapeAttribute(client.id)}" data-client-id="${escapeAttribute(client.id)}" style="--client-colour: ${getClientColour(client.id)}">
+      <div class="card-topline">
+        <div>
+          <p class="mood-pill">${escapeHtml(state.content.moodLabels[String(client.mood)] ?? moodLabels[client.mood])}</p>
+          <h3>${escapeHtml(client.name)}</h3>
+          <p class="next-session">${next ? `Next: ${escapeHtml(DAYS.find((day) => day.id === next.session.day)?.shortLabel ?? next.session.day)} ${escapeHtml(formatTime(next.session.start))}` : 'No sessions scheduled'}</p>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="icon-button" data-action="edit" data-id="${escapeAttribute(client.id)}" aria-label="Edit ${escapeAttribute(client.name)}">Edit</button>
+          <button type="button" class="icon-button danger" data-action="delete" data-id="${escapeAttribute(client.id)}" aria-label="Delete ${escapeAttribute(client.name)}">Delete</button>
+        </div>
+      </div>
+      <p class="notes ${client.notes.trim() ? '' : 'muted'}">${client.notes.trim() ? escapeHtml(client.notes) : 'No notes yet. Add goals, preferences, medical cautions, and progress snapshots.'}</p>
+      <div class="client-session-strip" aria-label="Weekly sessions for ${escapeAttribute(client.name)}">
+        ${sessions.length ? sessions.map((session) => `<span class="mini-session" style="--client-colour: ${getClientColour(client.id)}">${escapeHtml(DAYS.find((day) => day.id === session.day)?.shortLabel ?? session.day)} ${escapeHtml(formatTime(session.start))}</span>`).join('') : '<span class="mini-session unscheduled">Unscheduled</span>'}
+      </div>
+      <label class="mood-control">
+        <span>Mood / readiness</span>
+        <input type="range" min="0" max="2" step="1" value="${client.mood}" data-action="mood" data-id="${escapeAttribute(client.id)}" aria-label="Mood for ${escapeAttribute(client.name)}" />
+      </label>
+    </article>
+  `;
 }
 
 function renderDayPage(errors: string[]): string {
@@ -162,7 +193,7 @@ function renderDayPage(errors: string[]): string {
     <section class="calendar-page" aria-label="Day calendar">
       <div class="toolbar calendar-toolbar">
         <div>
-          <p class="section-kicker">Movable weekly rota</p>
+          <p class="section-kicker">Tap a session to open its client</p>
           <h2>${escapeHtml(dayLabel)} day view</h2>
         </div>
         <label class="compact-field">Day
@@ -180,27 +211,46 @@ function renderDayPage(errors: string[]): string {
 }
 
 function renderWeekPage(errors: string[]): string {
+  const hours = Array.from({ length: weekEndMinute / 60 - weekStartMinute / 60 + 1 }, (_, index) => weekStartMinute / 60 + index);
   return `
     <section class="calendar-page" aria-label="Week calendar">
       <div class="toolbar calendar-toolbar">
         <div>
-          <p class="section-kicker">Monday to Saturday</p>
+          <p class="section-kicker">Google-style week view</p>
           <h2>Week view</h2>
         </div>
-        <p class="calendar-note">No Sunday sessions. Saturday evening is kept free.</p>
+        <p class="calendar-note">Tap a coloured block to jump to the client card. Gaps show free coaching space.</p>
       </div>
       ${renderScheduleWarnings(errors)}
-      <div class="week-grid">
-        ${DAYS.map(
-          (day) => `
-            <section class="week-day">
-              <h3>${day.label}</h3>
-              ${getSessionsForDay(state.schedule, day.id).map(renderSessionCard).join('')}
-            </section>
-          `,
-        ).join('')}
+      <div class="week-calendar" style="--day-count: ${DAYS.length}; --hour-count: ${hours.length - 1}">
+        <div class="time-axis week-header-spacer" aria-hidden="true"></div>
+        ${DAYS.map((day) => `<div class="week-column-header">${escapeHtml(day.shortLabel)}</div>`).join('')}
+        <div class="time-axis">
+          ${hours.slice(0, -1).map((hour) => `<div class="time-label">${String(hour).padStart(2, '0')}:00</div>`).join('')}
+        </div>
+        ${DAYS.map(renderWeekColumn).join('')}
       </div>
     </section>
+  `;
+}
+
+function renderWeekColumn(day: { id: WeekDay; label: string }): string {
+  return `
+    <section class="week-column" aria-label="${escapeAttribute(day.label)} sessions">
+      ${getSessionsForDay(state.schedule, day.id).map(renderWeekBlock).join('')}
+    </section>
+  `;
+}
+
+function renderWeekBlock(session: CoachingSession): string {
+  const client = state.clients.find((candidate) => candidate.id === session.clientId);
+  const top = Math.max(0, toMinutes(session.start) - weekStartMinute);
+  const height = session.durationMinutes;
+  return `
+    <button type="button" class="week-session-block" style="--client-colour: ${getClientColour(session.clientId)}; --top: ${top}; --height: ${height}" data-action="open-client" data-client-id="${escapeAttribute(session.clientId)}" aria-label="Open ${escapeAttribute(client?.name ?? 'client')} session at ${escapeAttribute(formatTime(session.start))}">
+      <strong>${escapeHtml(formatTime(session.start))}</strong>
+      <span>${escapeHtml(client?.name ?? 'Unknown client')}</span>
+    </button>
   `;
 }
 
@@ -212,7 +262,7 @@ function renderScheduleWarnings(errors: string[]): string {
 function renderSessionCard(session: CoachingSession): string {
   const client = state.clients.find((candidate) => candidate.id === session.clientId);
   return `
-    <article class="session-card" data-session-id="${escapeAttribute(session.id)}">
+    <article class="session-card" data-action="open-client" data-client-id="${escapeAttribute(session.clientId)}" data-session-id="${escapeAttribute(session.id)}" style="--client-colour: ${getClientColour(session.clientId)}">
       <div class="session-time">${escapeHtml(formatTime(session.start))}</div>
       <div class="session-body">
         <h3>${escapeHtml(client?.name ?? 'Unknown client')}</h3>
@@ -255,7 +305,7 @@ function renderModal(client: ClientRecord | null | undefined): string {
       <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-header">
           <div>
-            <p class="section-kicker">${isEditing ? 'Update card' : 'Add card'}</p>
+            <p class="section-kicker">${isEditing ? 'Update card and sessions' : 'Add card'}</p>
             <h2 id="modal-title">${isEditing ? 'Edit client' : 'New client'}</h2>
           </div>
           <button type="button" class="close-button" data-action="close" aria-label="Close">×</button>
@@ -269,10 +319,10 @@ function renderModal(client: ClientRecord | null | undefined): string {
 
           <label class="field-label" for="client-mood">Mood / readiness</label>
           <select id="client-mood" name="mood" class="field-input">
-            ${([0, 1, 2] as Mood[])
-              .map((value) => `<option value="${value}" ${value === mood ? 'selected' : ''}>${escapeHtml(state.content.moodLabels[String(value)] ?? moodLabels[value])}</option>`)
-              .join('')}
+            ${([0, 1, 2] as Mood[]).map((value) => `<option value="${value}" ${value === mood ? 'selected' : ''}>${escapeHtml(state.content.moodLabels[String(value)] ?? moodLabels[value])}</option>`).join('')}
           </select>
+
+          ${isEditing && client ? renderSessionEditor(client) : '<p class="modal-note">Create the client first, then edit the card to add weekly sessions.</p>'}
 
           <div class="modal-actions">
             <button type="button" class="secondary-action" data-action="close">Cancel</button>
@@ -280,6 +330,42 @@ function renderModal(client: ClientRecord | null | undefined): string {
           </div>
         </form>
       </section>
+    </div>
+  `;
+}
+
+function renderSessionEditor(client: ClientRecord): string {
+  const sessions = state.schedule.filter((session) => session.clientId === client.id).sort((a, b) => (DAYS.findIndex((day) => day.id === a.day) - DAYS.findIndex((day) => day.id === b.day)) || toMinutes(a.start) - toMinutes(b.start));
+  return `
+    <section class="session-editor" aria-label="Weekly sessions for ${escapeAttribute(client.name)}">
+      <div class="session-editor-heading">
+        <div>
+          <p class="section-kicker">Weekly sessions</p>
+          <h3>Session slots</h3>
+        </div>
+        <button type="button" class="secondary-action small-action" data-action="add-session" data-client-id="${escapeAttribute(client.id)}">+ Add session</button>
+      </div>
+      ${sessions.length ? sessions.map(renderSessionEditorRow).join('') : '<p class="modal-note">No sessions yet. This client will stay at the bottom of the card list until scheduled.</p>'}
+    </section>
+  `;
+}
+
+function renderSessionEditorRow(session: CoachingSession): string {
+  return `
+    <div class="session-editor-row" style="--client-colour: ${getClientColour(session.clientId)}">
+      <input type="hidden" name="session-id" value="${escapeAttribute(session.id)}" />
+      <label>Day
+        <select name="session-day">
+          ${DAYS.map((day) => `<option value="${day.id}" ${day.id === session.day ? 'selected' : ''}>${day.shortLabel}</option>`).join('')}
+        </select>
+      </label>
+      <label>Start
+        <input name="session-start" type="time" step="1800" value="${escapeAttribute(session.start)}" />
+      </label>
+      <label class="session-focus-field">Focus
+        <input name="session-focus" value="${escapeAttribute(session.focus)}" />
+      </label>
+      <button type="button" class="icon-button danger" data-action="delete-session" data-id="${escapeAttribute(session.id)}">Delete</button>
     </div>
   `;
 }
@@ -305,6 +391,7 @@ function bindEvents(): void {
     syncClientList();
   });
 
+  document.querySelector<HTMLButtonElement>('[data-action="refresh-order"]')?.addEventListener('click', () => render());
   document.querySelector<HTMLButtonElement>('[data-action="smart-up"]')?.addEventListener('click', () => scrollToSmartCard('up'));
   document.querySelector<HTMLButtonElement>('[data-action="smart-down"]')?.addEventListener('click', () => scrollToSmartCard('down'));
 
@@ -319,6 +406,21 @@ function bindEvents(): void {
 
   document.querySelectorAll<HTMLInputElement>('[data-action="move-time"]').forEach((input) => {
     input.addEventListener('change', () => updateSessionSlot(input.dataset.id, { start: input.value }));
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-action="open-client"]').forEach((element) => {
+    element.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('select,input,button.icon-button')) return;
+      openClientCard(element.dataset.clientId);
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-action="add-session"]').forEach((button) => {
+    button.addEventListener('click', () => addSessionForClient(button.dataset.clientId));
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-action="delete-session"]').forEach((button) => {
+    button.addEventListener('click', () => deleteSession(button.dataset.id));
   });
 
   bindClientControls();
@@ -350,6 +452,8 @@ function bindClientControls(): void {
       if (!id || !client) return;
       if (confirm(`Delete ${client.name}? This cannot be undone.`)) {
         state.clients = deleteClient(state.clients, id);
+        state.schedule = state.schedule.filter((session) => session.clientId !== id);
+        saveScheduleToStorage(localStorage, state.schedule);
         persistClientsAndRender();
       }
     });
@@ -376,8 +480,34 @@ function updateSessionSlot(sessionId: string | undefined, change: Partial<Pick<C
   render();
 }
 
+function addSessionForClient(clientId: string | undefined): void {
+  if (!clientId) return;
+  const existing = state.schedule.filter((session) => session.clientId === clientId);
+  const nextIdNumber = Math.max(0, ...state.schedule.map((session) => Number(session.id.replace(/\D/g, '')) || 0)) + 1;
+  state.schedule = [
+    ...state.schedule,
+    {
+      id: `s${String(nextIdNumber).padStart(3, '0')}`,
+      clientId,
+      day: existing.length === 0 ? 'monday' : 'wednesday',
+      start: '14:00',
+      durationMinutes: 60,
+      focus: 'New coaching session',
+    },
+  ];
+  saveScheduleToStorage(localStorage, state.schedule);
+  render();
+}
+
+function deleteSession(sessionId: string | undefined): void {
+  if (!sessionId) return;
+  state.schedule = state.schedule.filter((session) => session.id !== sessionId);
+  saveScheduleToStorage(localStorage, state.schedule);
+  render();
+}
+
 function syncClientList(): void {
-  const filteredClients = searchClients(state.clients, state.query);
+  const filteredClients = getFilteredClients();
   const stats = getClientStats(state.clients);
   const clientList = document.querySelector<HTMLElement>('.client-list');
   if (clientList) clientList.innerHTML = renderClientList(filteredClients);
@@ -394,6 +524,16 @@ function scrollToSmartCard(direction: CardDirection): void {
   cards[targetIndex]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function openClientCard(clientId: string | undefined): void {
+  if (!clientId) return;
+  state.page = 'clients';
+  state.query = '';
+  render();
+  requestAnimationFrame(() => {
+    document.querySelector<HTMLElement>(`#client-${CSS.escape(clientId)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
 function handleFormSubmit(event: SubmitEvent): void {
   event.preventDefault();
   const form = event.currentTarget as HTMLFormElement;
@@ -406,12 +546,27 @@ function handleFormSubmit(event: SubmitEvent): void {
 
   if (state.editingId && state.editingId !== '__new__') {
     state.clients = updateClient(state.clients, state.editingId, input);
+    state.schedule = collectEditedSessions(form, state.editingId);
+    saveScheduleToStorage(localStorage, state.schedule);
   } else {
     state.clients = createClient(state.clients, input);
   }
 
   state.editingId = null;
   persistClientsAndRender();
+}
+
+function collectEditedSessions(form: HTMLFormElement, clientId: string): CoachingSession[] {
+  const rows = [...form.querySelectorAll<HTMLElement>('.session-editor-row')];
+  const edited = rows.map((row) => ({
+    id: row.querySelector<HTMLInputElement>('[name="session-id"]')?.value ?? crypto.randomUUID(),
+    clientId,
+    day: (row.querySelector<HTMLSelectElement>('[name="session-day"]')?.value ?? 'monday') as WeekDay,
+    start: row.querySelector<HTMLInputElement>('[name="session-start"]')?.value || '09:00',
+    durationMinutes: 60 as const,
+    focus: row.querySelector<HTMLInputElement>('[name="session-focus"]')?.value || 'Coaching session',
+  }));
+  return [...state.schedule.filter((session) => session.clientId !== clientId), ...edited];
 }
 
 function closeModal(): void {
