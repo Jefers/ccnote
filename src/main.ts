@@ -10,6 +10,7 @@ import {
   getNextSessionForClient,
   getSessionsForDay,
   moveSession,
+  splitNameForCalendar,
   sortClientsByUpcomingSession,
   toMinutes,
   validateWeeklySchedule,
@@ -223,7 +224,7 @@ function renderWeekPage(errors: string[]): string {
       </div>
       ${renderScheduleWarnings(errors)}
       <div class="week-calendar" style="--day-count: ${DAYS.length}; --hour-count: ${hours.length - 1}">
-        <div class="time-axis week-header-spacer" aria-hidden="true"></div>
+        <div class="week-header-spacer" aria-hidden="true"></div>
         ${DAYS.map((day) => `<div class="week-column-header">${escapeHtml(day.shortLabel)}</div>`).join('')}
         <div class="time-axis">
           ${hours.slice(0, -1).map((hour) => `<div class="time-label">${String(hour).padStart(2, '0')}:00</div>`).join('')}
@@ -244,12 +245,13 @@ function renderWeekColumn(day: { id: WeekDay; label: string }): string {
 
 function renderWeekBlock(session: CoachingSession): string {
   const client = state.clients.find((candidate) => candidate.id === session.clientId);
+  const label = splitNameForCalendar(client?.name ?? 'Unknown client');
   const top = Math.max(0, toMinutes(session.start) - weekStartMinute);
   const height = session.durationMinutes;
   return `
     <button type="button" class="week-session-block" style="--client-colour: ${getClientColour(session.clientId)}; --top: ${top}; --height: ${height}" data-action="open-client" data-client-id="${escapeAttribute(session.clientId)}" aria-label="Open ${escapeAttribute(client?.name ?? 'client')} session at ${escapeAttribute(formatTime(session.start))}">
       <strong>${escapeHtml(formatTime(session.start))}</strong>
-      <span>${escapeHtml(client?.name ?? 'Unknown client')}</span>
+      <span class="week-client-name"><span>${escapeHtml(label.givenNames)}</span>${label.surname ? `<span>${escapeHtml(label.surname)}</span>` : ''}</span>
     </button>
   `;
 }

@@ -735,7 +735,7 @@ button {
 
 .week-calendar {
   display: grid;
-  grid-template-columns: 3.65rem repeat(var(--day-count), minmax(8rem, 1fr));
+  grid-template-columns: 3.35rem repeat(var(--day-count), minmax(6.25rem, 1fr));
   gap: 0;
   overflow-x: auto;
   border: 1px solid rgba(16, 24, 32, 0.08);
@@ -815,6 +815,11 @@ button {
   font-size: 0.78rem;
   font-weight: 900;
   line-height: 1.1;
+}
+
+.week-client-name,
+.week-client-name span {
+  display: block;
 }
 
 .session-card {

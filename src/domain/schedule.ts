@@ -147,6 +147,15 @@ export function formatTime(value: string): string {
   return new Intl.DateTimeFormat('en-GB', { hour: 'numeric', minute: '2-digit' }).format(date);
 }
 
+export function splitNameForCalendar(name: string): { givenNames: string; surname: string } {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length <= 1) return { givenNames: parts[0] ?? '', surname: '' };
+  return {
+    givenNames: parts.slice(0, -1).join(' '),
+    surname: parts.at(-1) ?? '',
+  };
+}
+
 function getWeeklyMinute(date: Date): number {
   const jsDay = date.getDay();
   const mondayBasedDay = jsDay === 0 ? 6 : jsDay - 1;
